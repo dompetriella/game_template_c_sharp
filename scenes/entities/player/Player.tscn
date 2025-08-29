@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://db1c6cylyqy42"]
+
+[ext_resource type="Script" uid="uid://5x8dmkp1coq2" path="res://scenes/entities/player/Player.cs" id="1_afppm"]
+[ext_resource type="Texture2D" uid="uid://cqv2thbgs86be" path="res://assets/icon.svg" id="2_n1xdv"]
+[ext_resource type="Script" uid="uid://ckxysjv1eqmrn" path="res://scenes/entities/player/state_machine/PlayerStateMachine.cs" id="3_hgjck"]
+[ext_resource type="Script" uid="uid://0nxallki2e4l" path="res://scenes/entities/player/state_machine/states/Idle.cs" id="4_hgjck"]
+[ext_resource type="Script" uid="uid://ea572dcheuel" path="res://scenes/entities/player/state_machine/states/Immobile.cs" id="5_ppr6r"]
+[ext_resource type="Script" uid="uid://caas3xvjayqj7" path="res://scenes/entities/player/state_machine/states/Moving.cs" id="6_rx1o7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_30dhn"]
+radius = 60.4152
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_afppm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_n1xdv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_30dhn")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("DefaultState")]
+script = ExtResource("3_hgjck")
+DefaultState = NodePath("Idle")
+metadata/_custom_type_script = "uid://dkgkmyjjlowyn"
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("entity")]
+script = ExtResource("4_hgjck")
+entity = NodePath("../..")
+metadata/_custom_type_script = "uid://dda3vtjtruw2j"
+
+[node name="Moving" type="Node" parent="StateMachine" node_paths=PackedStringArray("entity")]
+script = ExtResource("6_rx1o7")
+entity = NodePath("../..")
+metadata/_custom_type_script = "uid://dda3vtjtruw2j"
+
+[node name="Immobile" type="Node" parent="StateMachine" node_paths=PackedStringArray("entity")]
+script = ExtResource("5_ppr6r")
+entity = NodePath("../..")
+metadata/_custom_type_script = "uid://dda3vtjtruw2j"
