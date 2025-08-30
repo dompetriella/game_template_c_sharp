@@ -1,13 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://wrexmrgcsvkg"]
+[gd_scene load_steps=4 format=3 uid="uid://wrexmrgcsvkg"]
 
 [ext_resource type="Script" uid="uid://dopmkyg752t38" path="res://Game.cs" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://d4l3lfhiv6egd" path="res://scripts/base/AudioManager.cs" id="2_feb5d"]
+[ext_resource type="Script" uid="uid://birrenyi7on6" path="res://TestControl.cs" id="3_feb5d"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_80nbo")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Transition" type="CanvasLayer" parent="."]
+layer = 0
 
-[node name="Transition" type="Control" parent="CanvasLayer"]
+[node name="TransitionLayer" type="Control" parent="Transition"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,13 +18,59 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Transition"]
+[node name="ColorRect" type="ColorRect" parent="Transition/TransitionLayer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 0)
 
-[node name="TransitionPlayer" type="AnimationPlayer" parent="CanvasLayer/Transition"]
+[node name="TransitionPlayer" type="AnimationPlayer" parent="Transition/TransitionLayer"]
+
+[node name="AudioManager" type="Node" parent="."]
+script = ExtResource("2_feb5d")
+
+[node name="PlayerSFX" type="AudioStreamPlayer" parent="AudioManager"]
+unique_name_in_owner = true
+
+[node name="EnemySFX" type="AudioStreamPlayer" parent="AudioManager"]
+unique_name_in_owner = true
+
+[node name="WorldSFX" type="AudioStreamPlayer" parent="AudioManager"]
+unique_name_in_owner = true
+
+[node name="UserInterfaceSFX" type="AudioStreamPlayer" parent="AudioManager"]
+unique_name_in_owner = true
+
+[node name="Music" type="AudioStreamPlayer" parent="AudioManager"]
+unique_name_in_owner = true
+
+[node name="TestControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_feb5d")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TestControl"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="PlaySoundEffectButton" type="Button" parent="TestControl/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Play Sound Effect"
+
+[node name="PlayMusicButton" type="Button" parent="TestControl/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Play Music"
