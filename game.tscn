@@ -29,8 +29,9 @@ color = Color(0, 0, 0, 0)
 
 [node name="TransitionPlayer" type="AnimationPlayer" parent="Transition/TransitionLayer"]
 
-[node name="AudioManager" type="Node" parent="."]
+[node name="AudioManager" type="Node" parent="." node_paths=PackedStringArray("MusicNode")]
 script = ExtResource("2_feb5d")
+MusicNode = NodePath("Music")
 
 [node name="Music" type="AudioStreamPlayer" parent="AudioManager"]
 unique_name_in_owner = true
