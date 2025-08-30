@@ -32,18 +32,6 @@ color = Color(0, 0, 0, 0)
 [node name="AudioManager" type="Node" parent="."]
 script = ExtResource("2_feb5d")
 
-[node name="PlayerSFX" type="AudioStreamPlayer" parent="AudioManager"]
-unique_name_in_owner = true
-
-[node name="EnemySFX" type="AudioStreamPlayer" parent="AudioManager"]
-unique_name_in_owner = true
-
-[node name="WorldSFX" type="AudioStreamPlayer" parent="AudioManager"]
-unique_name_in_owner = true
-
-[node name="UserInterfaceSFX" type="AudioStreamPlayer" parent="AudioManager"]
-unique_name_in_owner = true
-
 [node name="Music" type="AudioStreamPlayer" parent="AudioManager"]
 unique_name_in_owner = true
 

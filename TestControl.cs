@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class TestControl : Control
 {
@@ -16,14 +17,14 @@ public partial class TestControl : Control
 
         AudioStream music = ResourceLoader.Load<AudioStream>($"{Paths.Music}/default_music.mp3");
 
-        PlaySoundEffectButton.Pressed += () =>
+        PlaySoundEffectButton.Pressed += async () =>
         {
-            AudioManager.Instance.PlaySoundEffect(soundEffect: soundEffect, soundEffectSource: AudioManager.SoundEffectSource.Player);
+            await AudioManager.Instance.PlaySoundEffect(soundEffect: soundEffect);
         };
 
         PlayMusicButton.Pressed += () =>
         {
-            AudioManager.Instance.PlayMusic(audioStream: music, fadeInTime: 1);
+            AudioManager.Instance.PlayMusic(audioStream: music);
         };
 
     }
