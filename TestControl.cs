@@ -4,14 +4,24 @@ using System.Threading.Tasks;
 
 public partial class TestControl : Control
 {
-    private Button PlayMusicButton;
+    [Export]
+    public Button PlayMusicButton;
+
+    [Export]
+    public Button PauseMusicButton;
+
+    [Export]
+    public Button PlaySoundEffectButton;
+
+    [Export]
+    public Button PlayTransitionInButton;
+
+    [Export]
+    public Button PlayerTransitionOut;
 
     public override void _Ready()
     {
         base._Ready();
-
-        Button PlaySoundEffectButton = GetNode<Button>("%PlaySoundEffectButton");
-        Button PlayMusicButton = GetNode<Button>("%PlayMusicButton");
 
         AudioStream soundEffect = ResourceLoader.Load<AudioStream>($"{Paths.SoundEffects}/world_sfx.ogg");
 
@@ -25,6 +35,21 @@ public partial class TestControl : Control
         PlayMusicButton.Pressed += () =>
         {
             AudioManager.Instance.PlayMusic(audioStream: music);
+        };
+
+        PauseMusicButton.Pressed += () =>
+        {
+            AudioManager.Instance.PauseMusic();
+        };
+
+        PlayTransitionInButton.Pressed += () =>
+        {
+            TransitionManager.Instance.PlayTransition(transitionType: TransitionManager.TransitionType.FadeOut);
+        };
+
+        PlayerTransitionOut.Pressed += () =>
+        {
+            TransitionManager.Instance.PlayTransition(transitionType: TransitionManager.TransitionType.FadeIn);
         };
 
     }

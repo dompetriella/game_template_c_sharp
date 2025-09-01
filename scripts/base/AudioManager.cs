@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 public partial class AudioManager : Node
 {
     public static AudioManager Instance { get; private set; }
-    
+
     [Export]
     private AudioStreamPlayer MusicNode;
 
@@ -40,6 +40,26 @@ public partial class AudioManager : Node
             MusicNode.Play();
         }
 
+    }
+
+
+    public async void PauseMusic(float fadeOutTime = 0.0f)
+    {
+        if (!MusicNode.Playing)
+        {
+            GD.PushWarning("Cannot pause music - no music playing");
+            return;
+        }
+
+        if (fadeOutTime > 0)
+        {
+            Tween musicTween = GetTree().CreateTween();
+            musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, -80, fadeOutTime);
+
+            await ToSignal(musicTween, Tween.SignalName.Finished);
+        }
+
+        MusicNode.StreamPaused = true;
     }
 
     public async Task PlaySoundEffect(AudioStream soundEffect)

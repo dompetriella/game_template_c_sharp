@@ -1,16 +1,72 @@
-[gd_scene load_steps=4 format=3 uid="uid://wrexmrgcsvkg"]
+[gd_scene load_steps=9 format=3 uid="uid://wrexmrgcsvkg"]
 
 [ext_resource type="Script" uid="uid://dopmkyg752t38" path="res://Game.cs" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://brlcv25ea2t7" path="res://scripts/base/TransitionManager.cs" id="2_fc0e3"]
 [ext_resource type="Script" uid="uid://d4l3lfhiv6egd" path="res://scripts/base/AudioManager.cs" id="2_feb5d"]
 [ext_resource type="Script" uid="uid://birrenyi7on6" path="res://TestControl.cs" id="3_feb5d"]
+
+[sub_resource type="Animation" id="Animation_7jktm"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ryrav"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_eow3j"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j5wjh"]
+_data = {
+&"RESET": SubResource("Animation_ryrav"),
+&"fade_in": SubResource("Animation_7jktm"),
+&"fade_out": SubResource("Animation_eow3j")
+}
 
 [node name="Game" type="Node"]
 script = ExtResource("1_80nbo")
 
-[node name="Transition" type="CanvasLayer" parent="."]
+[node name="TransitionManager" type="CanvasLayer" parent="." node_paths=PackedStringArray("ColorRectNode", "AnimationPlayerNode")]
 layer = 0
+script = ExtResource("2_fc0e3")
+ColorRectNode = NodePath("TransitionLayer/ColorRect")
+AnimationPlayerNode = NodePath("TransitionLayer/TransitionPlayer")
 
-[node name="TransitionLayer" type="Control" parent="Transition"]
+[node name="TransitionLayer" type="Control" parent="TransitionManager"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +74,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Transition/TransitionLayer"]
+[node name="ColorRect" type="ColorRect" parent="TransitionManager/TransitionLayer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,7 +83,10 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
 
-[node name="TransitionPlayer" type="AnimationPlayer" parent="Transition/TransitionLayer"]
+[node name="TransitionPlayer" type="AnimationPlayer" parent="TransitionManager/TransitionLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_j5wjh")
+}
 
 [node name="AudioManager" type="Node" parent="." node_paths=PackedStringArray("MusicNode")]
 script = ExtResource("2_feb5d")
@@ -36,7 +95,9 @@ MusicNode = NodePath("Music")
 [node name="Music" type="AudioStreamPlayer" parent="AudioManager"]
 unique_name_in_owner = true
 
-[node name="TestControl" type="Control" parent="."]
+[node name="ScaffoldManager" type="Node" parent="."]
+
+[node name="TestControl" type="Control" parent="." node_paths=PackedStringArray("PlayMusicButton", "PauseMusicButton", "PlaySoundEffectButton", "PlayTransitionInButton", "PlayerTransitionOut")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,6 +105,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_feb5d")
+PlayMusicButton = NodePath("HBoxContainer/PlayMusicButton")
+PauseMusicButton = NodePath("HBoxContainer/PauseMusicButton")
+PlaySoundEffectButton = NodePath("HBoxContainer/PlaySoundEffectButton")
+PlayTransitionInButton = NodePath("HBoxContainer/PlayTransitionIn")
+PlayerTransitionOut = NodePath("HBoxContainer/PlayTransitionOut")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TestControl"]
 layout_mode = 1
@@ -63,3 +129,15 @@ text = "Play Sound Effect"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Play Music"
+
+[node name="PauseMusicButton" type="Button" parent="TestControl/HBoxContainer"]
+layout_mode = 2
+text = "Pause Music"
+
+[node name="PlayTransitionIn" type="Button" parent="TestControl/HBoxContainer"]
+layout_mode = 2
+text = "Transition In"
+
+[node name="PlayTransitionOut" type="Button" parent="TestControl/HBoxContainer"]
+layout_mode = 2
+text = "Transition Out"
