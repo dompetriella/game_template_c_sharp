@@ -16,7 +16,7 @@ public partial class AudioManager : Node
         Instance = this;
     }
 
-    public void PlayMusic(AudioStream audioStream, float fadeInTime = 0.0f)
+    public async void StartMusicTrack(AudioStream audioStream, float fadeInTime = 0.0f)
     {
         if (MusicNode.Playing)
         {
@@ -33,15 +33,44 @@ public partial class AudioManager : Node
             MusicNode.Play();
             Tween musicTween = GetTree().CreateTween();
             musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, 0, fadeInTime);
+            await ToSignal(musicTween, Tween.SignalName.Finished);
         }
-        else
+
+        MusicNode.Play();
+    }
+
+    public async void StopMusicTrack(float fadeOutTime = 0.0f)
+    {
+        if (MusicNode.Playing)
         {
-            MusicNode.VolumeDb = 0;
+            if (fadeOutTime > 0)
+            {
+                Tween musicTween = GetTree().CreateTween();
+                musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, -80, fadeOutTime);
+
+                await ToSignal(musicTween, Tween.SignalName.Finished);
+            }
+
+            MusicNode.Stop();
+        }
+    }
+
+    public async void ResumeMusic(float fadeInTime = 0.0f)
+    {
+        if (!MusicNode.Playing)
+        {
+            if (fadeInTime > 0)
+            {
+                MusicNode.VolumeDb = -80;
+                MusicNode.Play();
+                Tween musicTween = GetTree().CreateTween();
+                musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, 0, fadeInTime);
+                await ToSignal(musicTween, Tween.SignalName.Finished);
+            }
             MusicNode.Play();
         }
 
     }
-
 
     public async void PauseMusic(float fadeOutTime = 0.0f)
     {
@@ -60,6 +89,13 @@ public partial class AudioManager : Node
         }
 
         MusicNode.StreamPaused = true;
+    }
+
+    public void PlayMusic(AudioStream audioStream, float fadeInTime = 0.0f, float previousTrackFadeOutTime = 0.0f)
+    {
+        StopMusicTrack(fadeOutTime: previousTrackFadeOutTime);
+        MusicNode.Stream = audioStream;
+        StartMusicTrack(audioStream: audioStream, fadeInTime: fadeInTime);
     }
 
     public async Task PlaySoundEffect(AudioStream soundEffect)

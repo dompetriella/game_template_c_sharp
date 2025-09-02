@@ -34,7 +34,7 @@ public partial class TestControl : Control
 
         PlayMusicButton.Pressed += () =>
         {
-            AudioManager.Instance.PlayMusic(audioStream: music);
+            AudioManager.Instance.StartMusicTrack(audioStream: music);
         };
 
         PauseMusicButton.Pressed += () =>
