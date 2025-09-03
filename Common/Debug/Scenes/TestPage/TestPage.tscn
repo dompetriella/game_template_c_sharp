@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dnxdcwwed7h5p"]
+[gd_scene load_steps=4 format=3 uid="uid://dnxdcwwed7h5p"]
 
 [ext_resource type="Script" uid="uid://d2gbftblx867e" path="res://Common/Debug/Scenes/TestPage/TestPage.cs" id="1_a83i0"]
+[ext_resource type="Texture2D" uid="uid://dg1rs7kni3mxd" path="res://Assets/Themes/Backgrounds/DefaultBackground.tres" id="2_8anrd"]
+[ext_resource type="Theme" uid="uid://befu1x5a2206v" path="res://Assets/Themes/ApplicationTheme.tres" id="3_4yqju"]
 
 [node name="TestPage" type="Node"]
 
@@ -11,20 +13,35 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("1_a83i0")
-ReturnButton = NodePath("ReturnButton")
+ReturnButton = NodePath("VBoxContainer/ReturnButton")
 
-[node name="ReturnButton" type="Button" parent="Control"]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8anrd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.5
+offset_top = -19.0
+offset_right = 85.5
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ReturnButton" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_4yqju")
 text = "Return To Main Page"
-
-[node name="Label" type="Label" parent="."]
-offset_left = 234.0
-offset_top = 98.0
-offset_right = 814.0
-offset_bottom = 483.0
-text = "Test"
-horizontal_alignment = 1
-vertical_alignment = 1

@@ -14,12 +14,6 @@ public partial class TestControl : Control
     public Button PlaySoundEffectButton;
 
     [Export]
-    public Button PlayTransitionInButton;
-
-    [Export]
-    public Button PlayerTransitionOut;
-
-    [Export]
     public Button NextPageButton;
 
     public override void _Ready()
@@ -47,21 +41,9 @@ public partial class TestControl : Control
             AudioManager.Instance.PauseMusic();
         };
 
-        PlayTransitionInButton.Pressed += () =>
-        {
-            TransitionManager.Instance.PlayTransition(transitionType: TransitionManager.TransitionType.FadeOut);
-        };
-
-        PlayerTransitionOut.Pressed += () =>
-        {
-            TransitionManager.Instance.PlayTransition(transitionType: TransitionManager.TransitionType.FadeIn);
-        };
-
         NextPageButton.Pressed += () =>
         {
             ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: nextPage.Instantiate());
         };
-
     }
-
 }
