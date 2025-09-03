@@ -1,14 +1,27 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class Player : Entity
 {
-    [Export] public float speed = 300;
+    [Export]
+    public Label StateLabel;
+
+    [Export]
+    public StateMachine StateMachine;
+
     public override void _Ready()
     {
         base._Ready();
 
-        MoveSpeed = speed;
+    }
+
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+
+        StateLabel.Text = StateMachine.CurrentState.Name;
 
     }
 

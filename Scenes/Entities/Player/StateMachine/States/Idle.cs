@@ -3,15 +3,16 @@ using System;
 
 public partial class Idle : State
 {
-    [Export] public Entity entity;
+    [Export] public Entity Entity;
+    [Export] public SpeedComponent SpeedComponent;
 
     public override void Update(double delta)
     {
         base.Update(delta);
 
-        if (entity.Velocity != Vector2.Zero)
+        if (Entity.Velocity != Vector2.Zero)
         {
-            EmitSignal(State.SignalName.TransitionState, PlayerStateMachine.States.Moving);
+            EmitSignal(State.SignalName.TransitionState, this, PlayerStateMachine.States.Moving);
         }
 
     }
@@ -21,6 +22,6 @@ public partial class Idle : State
         base.PhysicsUpdate(delta);
 
         var inputVector = PlayerStateMachine.GetInputVector();
-        entity.Velocity = inputVector * entity.MoveSpeed;
+        Entity.Velocity = inputVector * SpeedComponent.Speed;
     }
 }

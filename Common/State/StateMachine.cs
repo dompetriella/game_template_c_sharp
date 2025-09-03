@@ -25,17 +25,16 @@ public partial class StateMachine : State
 
         foreach (var child in GetChildren())
         {
-            if (child is State childAsState)
+            if (child is State state)
             {
-                StatesDictionary[child.Name] = childAsState;
-                childAsState.TransitionState += OnTransitionState;
+                StatesDictionary[child.Name] = state;
+                state.TransitionState += OnTransitionState;
             }
 
         }
 
         if (DefaultState != null)
         {
-            GD.Print($"Entering State: {StatesDictionary.FirstOrDefault(entry => entry.Value == DefaultState).Key}");
             DefaultState.Enter();
             CurrentState = DefaultState;
         }
@@ -57,20 +56,16 @@ public partial class StateMachine : State
 
     private void OnTransitionState(State oldState, string newStateName)
     {
-        if (!StatesDictionary.TryGetValue(newStateName, out State state))
+        if (!StatesDictionary.TryGetValue(newStateName, out State newState))
         {
             GD.PushWarning($"Tried to transition state but {newStateName} doesn't exist");
             return;
         }
 
-        var newState = StatesDictionary[newStateName];
-
         if (newState == CurrentState)
-        {
             return;
-        }
 
-        CurrentState.Exit();
+        CurrentState?.Exit();
         newState.Enter();
 
         CurrentState = newState;

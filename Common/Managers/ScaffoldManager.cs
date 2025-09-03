@@ -21,7 +21,6 @@ public partial class ScaffoldManager : Node
 
     public async void ScaffoldNewSceneTree(Node newSceneTree, Func<Task> dataLoadingFunction = null, String transitionTypeOnExitScene = TransitionManager.TransitionType.FadeOut, String transitionTypeOnEnterNewScene = TransitionManager.TransitionType.FadeIn, float transitionDuration = 0.5f)
     {
-
         EmitSignal(SignalName.ScaffoldingStarted);
 
         TransitionManager.Instance.PlayTransition(transitionType: transitionTypeOnExitScene, transitionDuration, shouldEnableInputOnEnd: false);
@@ -45,7 +44,7 @@ public partial class ScaffoldManager : Node
         TransitionManager.Instance.PlayTransition(transitionType: transitionTypeOnEnterNewScene, transitionDuration);
 
         await ToSignal(TransitionManager.Instance, TransitionManager.SignalName.TransitionEnded);
-       
-        EmitSignal(SignalName.ScaffoldingStarted);
+
+        EmitSignal(SignalName.ScaffoldingEnded);
     }
 }

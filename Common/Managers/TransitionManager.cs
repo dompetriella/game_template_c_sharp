@@ -30,50 +30,51 @@ public partial class TransitionManager : CanvasLayer
     {
         base._Ready();
         Instance = this;
+
+        AnimationPlayerNode.AnimationStarted += OnAnimationStartedInternal;
+        AnimationPlayerNode.AnimationFinished += OnAnimationFinishedInternal;
     }
 
-    public void PlayTransition(string transitionType, double transitionDuration = 1.0, bool shouldDisableInputOnStart = true, bool shouldEnableInputOnEnd = true)
+    public void PlayTransition(string transitionType, double transitionDuration = 1.0,
+        bool shouldDisableInputOnStart = true, bool shouldEnableInputOnEnd = true)
     {
-        Animation animation = AnimationPlayerNode.GetAnimation(transitionType);
-
+        var animation = AnimationPlayerNode.GetAnimation(transitionType);
         if (animation == null)
         {
-            GD.PushWarning($"Animation with name {transitionType} does not exist, returning");
+            GD.PushWarning($"Animation {transitionType} not found");
             return;
         }
 
-        float animationLength = animation.Length;
-
-        if (!(animationLength > 0f))
+        if (animation.Length <= 0f)
         {
-            GD.PushWarning($"Animation with name {transitionType} does not have a length, returning");
+            GD.PushWarning($"Animation {transitionType} has no length");
             return;
         }
 
-        float customSpeed = (float)(animationLength / transitionDuration);
+        float customSpeed = (float)(animation.Length / transitionDuration);
 
+        _pendingDisableInput = shouldDisableInputOnStart;
+        _pendingEnableInput = shouldEnableInputOnEnd;
 
         AnimationPlayerNode.Play(name: transitionType, customSpeed: customSpeed);
-
-        AnimationPlayerNode.AnimationStarted += (animationName) => OnAnimationStarted(animationName: animationName, shouldDisableInputOnStart: shouldDisableInputOnStart);
-        AnimationPlayerNode.AnimationFinished += (animationName) => OnAnimationFinished(animationName: animationName, shouldEnableInputOnEnd: shouldEnableInputOnEnd);
     }
 
-    private void OnAnimationStarted(StringName animationName, bool shouldDisableInputOnStart)
+    private bool _pendingDisableInput;
+    private bool _pendingEnableInput;
+
+    private void OnAnimationStartedInternal(StringName animationName)
     {
-        if (shouldDisableInputOnStart)
-        {
+        if (_pendingDisableInput)
             Layer = 99;
-        }
-        EmitSignal(signal: SignalName.TransitionStarted, animationName);
+
+        EmitSignal(SignalName.TransitionStarted, (string)animationName);
     }
 
-    private void OnAnimationFinished(StringName animationName, bool shouldEnableInputOnEnd)
+    private void OnAnimationFinishedInternal(StringName animationName)
     {
-        if (shouldEnableInputOnEnd)
-        {
+        if (_pendingEnableInput)
             Layer = 0;
-        }
-        EmitSignal(signal: SignalName.TransitionEnded, animationName);
+
+        EmitSignal(SignalName.TransitionEnded, (string)animationName);
     }
 }
