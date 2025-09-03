@@ -4,13 +4,13 @@ using System;
 public partial class TransitionManager : CanvasLayer
 {
 
+    public static TransitionManager Instance { get; private set; }
+
     [Signal]
     public delegate void TransitionStartedEventHandler(string animationName);
 
     [Signal]
     public delegate void TransitionEndedEventHandler(string animationName);
-
-    public static TransitionManager Instance { get; private set; }
 
 
     [Export]

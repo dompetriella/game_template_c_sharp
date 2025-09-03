@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=3 uid="uid://xod7cm3vmepr"]
+
+[ext_resource type="Script" uid="uid://birrenyi7on6" path="res://Common/Debug/Scenes/TestTitlePage/TestControl.cs" id="1_tka0q"]
+
+[node name="TestControl" type="Control" node_paths=PackedStringArray("PlayMusicButton", "PauseMusicButton", "PlaySoundEffectButton", "PlayTransitionInButton", "PlayerTransitionOut", "NextPageButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tka0q")
+PlayMusicButton = NodePath("HBoxContainer/PlayMusicButton")
+PauseMusicButton = NodePath("HBoxContainer/PauseMusicButton")
+PlaySoundEffectButton = NodePath("HBoxContainer/PlaySoundEffectButton")
+PlayTransitionInButton = NodePath("HBoxContainer/PlayTransitionIn")
+PlayerTransitionOut = NodePath("HBoxContainer/PlayTransitionOut")
+NextPageButton = NodePath("HBoxContainer/NextPageButton")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="PlaySoundEffectButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Play Sound Effect"
+
+[node name="PlayMusicButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Play Music"
+
+[node name="PauseMusicButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Pause Music"
+
+[node name="PlayTransitionIn" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Transition In"
+
+[node name="PlayTransitionOut" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Transition Out"
+
+[node name="NextPageButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Scaffold Next Page"

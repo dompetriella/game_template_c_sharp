@@ -19,6 +19,9 @@ public partial class TestControl : Control
     [Export]
     public Button PlayerTransitionOut;
 
+    [Export]
+    public Button NextPageButton;
+
     public override void _Ready()
     {
         base._Ready();
@@ -26,6 +29,8 @@ public partial class TestControl : Control
         AudioStream soundEffect = ResourceLoader.Load<AudioStream>($"{Paths.SoundEffects}/world_sfx.ogg");
 
         AudioStream music = ResourceLoader.Load<AudioStream>($"{Paths.Music}/default_music.mp3");
+
+        PackedScene nextPage = ResourceLoader.Load<PackedScene>("uid://dnxdcwwed7h5p");
 
         PlaySoundEffectButton.Pressed += async () =>
         {
@@ -50,6 +55,11 @@ public partial class TestControl : Control
         PlayerTransitionOut.Pressed += () =>
         {
             TransitionManager.Instance.PlayTransition(transitionType: TransitionManager.TransitionType.FadeIn);
+        };
+
+        NextPageButton.Pressed += () =>
+        {
+            ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: nextPage.Instantiate());
         };
 
     }
