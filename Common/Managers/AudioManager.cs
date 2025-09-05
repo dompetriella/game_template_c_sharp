@@ -16,7 +16,7 @@ public partial class AudioManager : Node
         Instance = this;
     }
 
-    public async void StartMusicTrack(AudioStream audioStream, float fadeInTime = 0.0f)
+    public async void StartMusicTrack(AudioStream audioStream, float fadeInTime = 0.0f, bool shouldRepeat = true)
     {
         if (MusicNode.Playing)
         {
@@ -25,7 +25,7 @@ public partial class AudioManager : Node
             MusicNode.VolumeDb = 0;
         }
 
-        MusicNode.Stream = audioStream;
+        MusicNode.Stream = PrepareStream(audioStream: audioStream, shouldRepeat: shouldRepeat);
 
         if (fadeInTime > 0.0f)
         {
@@ -91,10 +91,9 @@ public partial class AudioManager : Node
         MusicNode.StreamPaused = true;
     }
 
-    public void PlayMusic(AudioStream audioStream, float fadeInTime = 0.0f, float previousTrackFadeOutTime = 0.0f)
+    public void PlayMusic(AudioStream audioStream, float fadeInTime = 0.0f, float previousTrackFadeOutTime = 0.0f, bool shouldRepeat = true)
     {
         StopMusicTrack(fadeOutTime: previousTrackFadeOutTime);
-        MusicNode.Stream = audioStream;
         StartMusicTrack(audioStream: audioStream, fadeInTime: fadeInTime);
     }
 
@@ -109,5 +108,43 @@ public partial class AudioManager : Node
         await ToSignal(audioStreamPlayer, AudioStreamPlayer.SignalName.Finished);
 
         audioStreamPlayer.QueueFree();
+    }
+
+    private static AudioStream PrepareStream(AudioStream audioStream, bool shouldRepeat)
+    {
+        if (audioStream == null)
+        {
+            GD.PushWarning("Audio stream cannot be played - is null");
+            return null;
+        }
+
+
+
+        if (audioStream.Duplicate() is not AudioStream streamCopy)
+        {
+            GD.PushWarning("Audio stream parameter is not an usable AudioStream");
+            return null;
+        }
+
+
+        if (shouldRepeat)
+        {
+            switch (streamCopy)
+            {
+                case AudioStreamOggVorbis ogg:
+                    ogg.Loop = shouldRepeat;
+                    break;
+
+                case AudioStreamMP3 mp3:
+                    mp3.Loop = shouldRepeat;
+                    break;
+
+                case AudioStreamWav wav:
+                    wav.LoopMode = shouldRepeat ? AudioStreamWav.LoopModeEnum.Forward : AudioStreamWav.LoopModeEnum.Disabled;
+                    break;
+            }
+        }
+
+        return streamCopy;
     }
 }
