@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://birrenyi7on6" path="res://Common/Debug/Scenes/TestTitlePage/TestTitlePage.cs" id="1_tka0q"]
 [ext_resource type="Theme" uid="uid://befu1x5a2206v" path="res://Assets/Themes/ApplicationTheme.tres" id="2_66sbl"]
 [ext_resource type="Texture2D" uid="uid://dg1rs7kni3mxd" path="res://Assets/Themes/Backgrounds/DefaultBackground.tres" id="2_axbxb"]
-[ext_resource type="PackedScene" uid="uid://dnxdcwwed7h5p" path="res://Common/Debug/Scenes/TestPage/TestPage.tscn" id="2_b0gje"]
+[ext_resource type="Script" uid="uid://c1l6d57bw21vn" path="res://Common/Components/NavigationRouteComponent.cs" id="4_b0gje"]
 
-[node name="TestTitlePage" type="Control" node_paths=PackedStringArray("PlayMusicButton", "PauseMusicButton", "PlaySoundEffectButton", "NextPageButton")]
+[node name="TestTitlePage" type="Control" node_paths=PackedStringArray("PlayMusicButton", "PauseMusicButton", "PlaySoundEffectButton", "NextPageButton", "NavigationRouteComponent")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +17,7 @@ PlayMusicButton = NodePath("VBoxContainer/FlowContainer/PlayMusicButton")
 PauseMusicButton = NodePath("VBoxContainer/FlowContainer/PauseMusicButton")
 PlaySoundEffectButton = NodePath("VBoxContainer/FlowContainer/PlaySoundEffectButton")
 NextPageButton = NodePath("VBoxContainer/FlowContainer/PageButton")
-NextPage = ExtResource("2_b0gje")
+NavigationRouteComponent = NodePath("VBoxContainer/FlowContainer/PageButton/NavigationRouteComponent")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -66,6 +66,11 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("2_66sbl")
 text = "Go To Next Page"
+
+[node name="NavigationRouteComponent" type="Node" parent="VBoxContainer/FlowContainer/PageButton"]
+script = ExtResource("4_b0gje")
+SceneUID = "uid://dnxdcwwed7h5p"
+metadata/_custom_type_script = "uid://c1l6d57bw21vn"
 
 [node name="PlaySoundEffectButton" type="Button" parent="VBoxContainer/FlowContainer"]
 layout_mode = 2

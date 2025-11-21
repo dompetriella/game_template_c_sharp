@@ -7,16 +7,18 @@ public partial class TestPage : Control
     [Export]
     public Button ReturnButton;
 
+    [Export]
+    public NavigationRouteComponent NavigationRouteComponent;
+    
+
     public override void _Ready()
     {
         base._Ready();
 
-        PackedScene previousPage = ResourceLoader.Load<PackedScene>("uid://xod7cm3vmepr");
-
 
         ReturnButton.Pressed += () =>
         {
-            ScaffoldManager.Instance.ScaffoldNewSceneTree(previousPage.Instantiate());
+            ScaffoldManager.Instance.ScaffoldNewSceneTree(NavigationRouteComponent.Scene.Instantiate());
         };
 
     }

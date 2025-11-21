@@ -17,7 +17,7 @@ public partial class TestTitlePage : Control
     public Button NextPageButton;
 
     [Export]
-    public PackedScene NextPage;
+    public NavigationRouteComponent NavigationRouteComponent;
 
     public override void _Ready()
     {
@@ -45,7 +45,7 @@ public partial class TestTitlePage : Control
 
         NextPageButton.Pressed += () =>
         {
-            ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: NextPage.Instantiate());
+            ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: NavigationRouteComponent.Scene.Instantiate());
         };
     }
 }
