@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 
-public partial class TestControl : Control
+public partial class TestTitlePage : Control
 {
     [Export]
     public Button PlayMusicButton;
@@ -16,6 +16,9 @@ public partial class TestControl : Control
     [Export]
     public Button NextPageButton;
 
+    [Export]
+    public PackedScene NextPage;
+
     public override void _Ready()
     {
         base._Ready();
@@ -24,7 +27,6 @@ public partial class TestControl : Control
 
         AudioStream music = ResourceLoader.Load<AudioStream>($"{Paths.Music}/default_music.mp3");
 
-        PackedScene nextPage = ResourceLoader.Load<PackedScene>("uid://dnxdcwwed7h5p");
 
         PlaySoundEffectButton.Pressed += async () =>
         {
@@ -43,7 +45,7 @@ public partial class TestControl : Control
 
         NextPageButton.Pressed += () =>
         {
-            ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: nextPage.Instantiate());
+            ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: NextPage.Instantiate());
         };
     }
 }

@@ -1,10 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://xod7cm3vmepr"]
+[gd_scene load_steps=5 format=3 uid="uid://xod7cm3vmepr"]
 
-[ext_resource type="Script" uid="uid://birrenyi7on6" path="res://Common/Debug/Scenes/TestTitlePage/TestControl.cs" id="1_tka0q"]
+[ext_resource type="Script" uid="uid://birrenyi7on6" path="res://Common/Debug/Scenes/TestTitlePage/TestTitlePage.cs" id="1_tka0q"]
 [ext_resource type="Theme" uid="uid://befu1x5a2206v" path="res://Assets/Themes/ApplicationTheme.tres" id="2_66sbl"]
 [ext_resource type="Texture2D" uid="uid://dg1rs7kni3mxd" path="res://Assets/Themes/Backgrounds/DefaultBackground.tres" id="2_axbxb"]
+[ext_resource type="PackedScene" uid="uid://dnxdcwwed7h5p" path="res://Common/Debug/Scenes/TestPage/TestPage.tscn" id="2_b0gje"]
 
-[node name="TestControl" type="Control" node_paths=PackedStringArray("PlayMusicButton", "PauseMusicButton", "PlaySoundEffectButton", "NextPageButton")]
+[node name="TestTitlePage" type="Control" node_paths=PackedStringArray("PlayMusicButton", "PauseMusicButton", "PlaySoundEffectButton", "NextPageButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,6 +17,7 @@ PlayMusicButton = NodePath("VBoxContainer/FlowContainer/PlayMusicButton")
 PauseMusicButton = NodePath("VBoxContainer/FlowContainer/PauseMusicButton")
 PlaySoundEffectButton = NodePath("VBoxContainer/FlowContainer/PlaySoundEffectButton")
 NextPageButton = NodePath("VBoxContainer/FlowContainer/PageButton")
+NextPage = ExtResource("2_b0gje")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -27,7 +29,7 @@ grow_vertical = 2
 texture = ExtResource("2_axbxb")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
+layout_mode = 0
 offset_top = 230.0
 offset_right = 1152.0
 offset_bottom = 418.0
