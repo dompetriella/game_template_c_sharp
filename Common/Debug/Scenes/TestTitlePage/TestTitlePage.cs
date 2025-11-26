@@ -17,6 +17,9 @@ public partial class TestTitlePage : Control
     public Button NextPageButton;
 
     [Export]
+    public Button NotificationButton;
+
+    [Export]
     public NavigationRouteComponent NavigationRouteComponent;
 
     public override void _Ready()
@@ -46,6 +49,11 @@ public partial class TestTitlePage : Control
         NextPageButton.Pressed += () =>
         {
             ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: NavigationRouteComponent.Scene.Instantiate());
+        };
+
+        NotificationButton.Pressed += () =>
+        {
+            NotificationManager.Instance.ShowNotification(messageText: "This is [b]bold[/b] and [color=red]red[/color] text.");
         };
     }
 }

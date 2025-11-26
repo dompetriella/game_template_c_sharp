@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dg1rs7kni3mxd" path="res://Assets/Themes/Backgrounds/DefaultBackground.tres" id="2_axbxb"]
 [ext_resource type="Script" uid="uid://c1l6d57bw21vn" path="res://Common/Components/NavigationRouteComponent.cs" id="4_b0gje"]
 
-[node name="TestTitlePage" type="Control" node_paths=PackedStringArray("PlayMusicButton", "PauseMusicButton", "PlaySoundEffectButton", "NextPageButton", "NavigationRouteComponent")]
+[node name="TestTitlePage" type="Control" node_paths=PackedStringArray("PlayMusicButton", "PauseMusicButton", "PlaySoundEffectButton", "NextPageButton", "NotificationButton", "NavigationRouteComponent")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,6 +17,7 @@ PlayMusicButton = NodePath("VBoxContainer/FlowContainer/PlayMusicButton")
 PauseMusicButton = NodePath("VBoxContainer/FlowContainer/PauseMusicButton")
 PlaySoundEffectButton = NodePath("VBoxContainer/FlowContainer/PlaySoundEffectButton")
 NextPageButton = NodePath("VBoxContainer/FlowContainer/PageButton")
+NotificationButton = NodePath("VBoxContainer/FlowContainer/NotificationButton")
 NavigationRouteComponent = NodePath("VBoxContainer/FlowContainer/PageButton/NavigationRouteComponent")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -58,7 +59,8 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(720, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/h_separation = 32
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 16
 alignment = 1
 
 [node name="PageButton" type="Button" parent="VBoxContainer/FlowContainer"]
@@ -86,3 +88,8 @@ text = "Play Music"
 layout_mode = 2
 theme = ExtResource("2_66sbl")
 text = "Pause Music"
+
+[node name="NotificationButton" type="Button" parent="VBoxContainer/FlowContainer"]
+layout_mode = 2
+theme = ExtResource("2_66sbl")
+text = "Show Notification"

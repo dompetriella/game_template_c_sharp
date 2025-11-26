@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ciudsaf8ox1g4"]
+[gd_scene load_steps=4 format=3 uid="uid://ciudsaf8ox1g4"]
 
-[ext_resource type="Theme" uid="uid://befu1x5a2206v" path="res://Assets/Themes/ApplicationTheme.tres" id="1_k4cjb"]
+[ext_resource type="Theme" uid="uid://befu1x5a2206v" path="res://Assets/Themes/ApplicationTheme.tres" id="1_to4u0"]
+[ext_resource type="Script" uid="uid://uvrkstxapxae" path="res://Common/Managers/NotificationManager/Notification/Notification.cs" id="2_praw3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j82es"]
 bg_color = Color(0.12041845, 0.12041847, 0.12041838, 1)
@@ -14,18 +15,17 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="MarginContainer" type="MarginContainer"]
+[node name="SimpleNotification" type="MarginContainer" node_paths=PackedStringArray("MessageLabel")]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -87.0
-offset_right = 600.0
+offset_right = 68.0
+offset_bottom = -19.0
 grow_vertical = 0
-theme = ExtResource("1_k4cjb")
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+theme = ExtResource("1_to4u0")
+script = ExtResource("2_praw3")
+MessageLabel = NodePath("PanelContainer/MarginContainer/RichTextLabel")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -40,6 +40,6 @@ theme_override_constants/margin_bottom = 16
 
 [node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
+bbcode_enabled = true
 fit_content = true
-scroll_active = false
 autowrap_mode = 0

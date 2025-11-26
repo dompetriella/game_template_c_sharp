@@ -15,11 +15,6 @@ run/main_scene="res://Game.tscn"
 config/features=PackedStringArray("4.5", "C#", "Mobile")
 config/icon="res://Assets/Images/icon.svg"
 
-[autoload]
-
-AudioManager="*res://Common/Managers/AudioManager.cs"
-ScaffoldManager="*res://Common/Managers/ScaffoldManager.cs"
-
 [display]
 
 window/size/initial_screen=1
