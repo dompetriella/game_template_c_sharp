@@ -36,13 +36,16 @@ public partial class TestPage : Control
         // Example of using the StatefulData 
         if (CounterButton != null && CounterLabel != null && CounterProgress != null)
         {
-            var initialValue = UiState.Instance.TestCounter.Value;
+
+           var counterState = UiState.Instance.TestCounter;
+
+            var initialValue = counterState.Value;
+
             CounterLabel.Text = initialValue.ToString();
             CounterProgress.MaxValue = 100;
             CounterProgress.Value = initialValue;
 
-            var counterState = UiState.Instance.TestCounter;
-
+ 
             CounterButton.Pressed += () =>
             {
                 var currentValue = counterState.Value;
@@ -57,7 +60,7 @@ public partial class TestPage : Control
 
                 if (newValue >= CounterProgress.MaxValue)
                 {
-                    await NotificationManager.Instance.ShowNotification(messageText: "[color=red]MAX [/color] Value Reached", showDurationInMs: 2000);
+                    await NotificationManager.Instance.ShowNotification(messageText: "[color=red]MAX[/color] Value Reached", showDurationInMs: 2000);
                 }
             });
         }

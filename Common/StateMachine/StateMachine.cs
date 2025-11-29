@@ -16,6 +16,8 @@ public partial class StateMachine : State
 
     public State CurrentState;
 
+    public List<State> StateHistory { get; private set;} = [];
+
     public Dictionary<string, State> StatesDictionary = [];
 
 
@@ -37,6 +39,7 @@ public partial class StateMachine : State
         {
             DefaultState.Enter();
             CurrentState = DefaultState;
+            StateHistory.Add(CurrentState);
         }
     }
 
@@ -69,6 +72,7 @@ public partial class StateMachine : State
         newState.Enter();
 
         CurrentState = newState;
+        StateHistory.Add(CurrentState);
 
         EmitSignal(SignalName.StateHasChanged, CurrentState);
     }
