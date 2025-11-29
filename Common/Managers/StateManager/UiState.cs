@@ -6,8 +6,9 @@ public partial class UiState : Node
 {
     public static UiState Instance;
 
-    // Values
     public StatefulData<int> TestCounter = new(0);
+
+    public int Testvalue = 5;
 
 
     public override void _Ready()
@@ -16,4 +17,6 @@ public partial class UiState : Node
 
         Instance = this;
     }
+
+
 }

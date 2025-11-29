@@ -1,22 +1,12 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class StatefulData<T> where T : IEquatable<T>
 {
-	public delegate void ValueChangedEventHandler(T previousValue, T newValue);
+	public delegate void ValueChangedHandler(T previousValue, T newValue);
 
-	private readonly List<WeakReference<ValueChangedEventHandler>> _listeners = new();
-
-	/// <summary>
-	/// Public event that uses weak references internally, so dead listeners clean themselves up.
-	/// </summary>
-	public event ValueChangedEventHandler ValueChanged
-	{
-		add => AddListener(value);
-		remove => RemoveListener(value);
-	}
+	private readonly List<(WeakReference<Node> NodeRef, ValueChangedHandler Handler)> _listeners = new();
 
 	private T _value;
 	private T _previousValue;
@@ -27,26 +17,33 @@ public class StatefulData<T> where T : IEquatable<T>
 		_previousValue = initialValue;
 	}
 
-	public T Value => _value;
-	public T PreviousValue => _previousValue;
-
-	private void AddListener(ValueChangedEventHandler handler)
+	public T Value
 	{
-		if (handler == null)
-			return;
-
-		// Avoid duplicates
-		if (_listeners.Any(wr => wr.TryGetTarget(out var target) && target == handler))
-			return;
-
-		_listeners.Add(new WeakReference<ValueChangedEventHandler>(handler));
+		get => _value;
+		set => SetValue(value);
 	}
 
-	private void RemoveListener(ValueChangedEventHandler handler)
+	public T PreviousValue => _previousValue;
+
+	/// <summary>
+	/// Connects a callback to value changes. The callback automatically disconnects
+	/// when the given Node leaves the scene tree.
+	/// </summary>
+	public void ValueChanged(Node node, ValueChangedHandler handler)
 	{
-		_listeners.RemoveAll(wr => {
-			return !wr.TryGetTarget(out var target) || target == handler;
-		});
+		if (node == null || handler == null)
+			return;
+
+		var nodeRef = new WeakReference<Node>(node);
+		_listeners.Add((nodeRef, handler));
+
+		// Auto-cleanup when node exits the tree
+		node.TreeExiting += () =>
+		{
+			_listeners.RemoveAll(pair =>
+				!pair.NodeRef.TryGetTarget(out var n) || n == node
+			);
+		};
 	}
 
 	public void SetValue(T newValue)
@@ -57,36 +54,27 @@ public class StatefulData<T> where T : IEquatable<T>
 		_previousValue = _value;
 		_value = newValue;
 
-		var deadRefs = new List<WeakReference<ValueChangedEventHandler>>();
-
-		foreach (var weakRef in _listeners.ToList())
+		for (int i = _listeners.Count - 1; i >= 0; i--)
 		{
-			if (weakRef.TryGetTarget(out var handler))
+			var (nodeRef, handler) = _listeners[i];
+			if (!nodeRef.TryGetTarget(out var node) || !GodotObject.IsInstanceValid(node))
 			{
-				try
-				{
-					handler.Invoke(_previousValue, _value);
-				}
-				catch (ObjectDisposedException)
-				{
-					deadRefs.Add(weakRef);
-				}
-				catch (NullReferenceException)
-				{
-					deadRefs.Add(weakRef);
-				}
+				_listeners.RemoveAt(i);
+				continue;
 			}
-			else
+
+			try
 			{
-				deadRefs.Add(weakRef);
+				handler.Invoke(_previousValue, _value);
+			}
+			catch (Exception)
+			{
+				_listeners.RemoveAt(i);
 			}
 		}
-
-		foreach (var dead in deadRefs)
-			_listeners.Remove(dead);
 	}
 
-	public override string ToString() => $"{_value}";
+	public static implicit operator T(StatefulData<T> s) => s.Value;
 
-	public static implicit operator T(StatefulData<T> p) => p.Value;
+	public override string ToString() => $"{_value}";
 }
