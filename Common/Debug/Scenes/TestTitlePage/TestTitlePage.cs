@@ -51,9 +51,9 @@ public partial class TestTitlePage : Control
             ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: NavigationRouteComponent.Scene.Instantiate());
         };
 
-        NotificationButton.Pressed += () =>
+        NotificationButton.Pressed += async () =>
         {
-            NotificationManager.Instance.ShowNotification(messageText: "This is [b]bold[/b] and [color=red]red[/color] text.");
+            await NotificationManager.Instance.ShowNotification(messageText: "This is [b]bold[/b] and [color=red]red[/color] text.");
         };
     }
 }
