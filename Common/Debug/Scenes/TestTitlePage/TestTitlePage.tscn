@@ -16,9 +16,9 @@ script = ExtResource("1_tka0q")
 PlayMusicButton = NodePath("VBoxContainer/FlowContainer/PlayMusicButton")
 PauseMusicButton = NodePath("VBoxContainer/FlowContainer/PauseMusicButton")
 PlaySoundEffectButton = NodePath("VBoxContainer/FlowContainer/PlaySoundEffectButton")
-NextPageButton = NodePath("VBoxContainer/FlowContainer/PageButton")
+NextPageButton = NodePath("VBoxContainer/PageButton")
 NotificationButton = NodePath("VBoxContainer/FlowContainer/NotificationButton")
-NavigationRouteComponent = NodePath("VBoxContainer/FlowContainer/PageButton/NavigationRouteComponent")
+NavigationRouteComponent = NodePath("VBoxContainer/PageButton/NavigationRouteComponent")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -55,6 +55,17 @@ text = "Test Controls"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PageButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_66sbl")
+text = "Go To Next Page"
+
+[node name="NavigationRouteComponent" type="Node" parent="VBoxContainer/PageButton"]
+script = ExtResource("4_b0gje")
+SceneUID = "uid://dnxdcwwed7h5p"
+metadata/_custom_type_script = "uid://c1l6d57bw21vn"
+
 [node name="FlowContainer" type="FlowContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(720, 0)
 layout_mode = 2
@@ -62,17 +73,6 @@ size_flags_horizontal = 4
 theme_override_constants/h_separation = 24
 theme_override_constants/v_separation = 16
 alignment = 1
-
-[node name="PageButton" type="Button" parent="VBoxContainer/FlowContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("2_66sbl")
-text = "Go To Next Page"
-
-[node name="NavigationRouteComponent" type="Node" parent="VBoxContainer/FlowContainer/PageButton"]
-script = ExtResource("4_b0gje")
-SceneUID = "uid://dnxdcwwed7h5p"
-metadata/_custom_type_script = "uid://c1l6d57bw21vn"
 
 [node name="PlaySoundEffectButton" type="Button" parent="VBoxContainer/FlowContainer"]
 layout_mode = 2

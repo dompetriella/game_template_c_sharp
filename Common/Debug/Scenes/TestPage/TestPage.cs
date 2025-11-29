@@ -41,18 +41,25 @@ public partial class TestPage : Control
             CounterProgress.MaxValue = 100;
             CounterProgress.Value = initialValue;
 
+            var counterState = UiState.Instance.TestCounter;
+
             CounterButton.Pressed += () =>
             {
-                var currentValue = UiState.Instance.TestCounter.Value;
-                UiState.Instance.TestCounter.SetValue(currentValue + 5);
+                var currentValue = counterState.Value;
+                counterState.SetValue(currentValue + 5);
             };
 
-            UiState.Instance.TestCounter.ValueChanged += (previousValue, newValue) =>
+            counterState.ValueChanged(this, async (previousValue, newValue) =>
             {
                 CounterLabel.Text = newValue.ToString();
-                CreateTween().TweenProperty(CounterProgress, property: ProgressBarProperties.Value, finalVal: newValue, duration: 0.25);
+                var progressValue = Math.Clamp(value: newValue, min: 0, max: CounterProgress.MaxValue);
+                CreateTween().TweenProperty(CounterProgress, property: ProgressBarProperties.Value, finalVal: progressValue, duration: 0.25);
 
-            };
+                if (newValue >= CounterProgress.MaxValue)
+                {
+                    await NotificationManager.Instance.ShowNotification(messageText: "[color=red]MAX [/color] Value Reached", showDurationInMs: 2000);
+                }
+            });
         }
 
     }
