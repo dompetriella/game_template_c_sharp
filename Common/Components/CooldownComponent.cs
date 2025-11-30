@@ -5,6 +5,17 @@ using System.Threading.Tasks;
 [GlobalClass]
 public partial class CooldownComponent : Node
 {
+
+    /// <summary>
+    /// Signal emitted when the cooldown starts.
+    /// </summary>
+    [Signal] public delegate void CooldownStartedEventHandler();
+
+    /// <summary>
+    /// Signal emitted when the cooldown finishes.
+    /// </summary>
+    [Signal] public delegate void CooldownFinishedEventHandler();
+
     /// <summary>
     /// Total duration of the cooldown in milliseconds.
     /// </summary>
@@ -26,14 +37,14 @@ public partial class CooldownComponent : Node
     public int TimeRemaining { get; private set; } = 0;
 
     /// <summary>
-    /// Signal emitted when the cooldown starts.
+    /// Time remaining in milliseconds.
     /// </summary>
-    [Signal] public delegate void CooldownStartedEventHandler();
+    public int TimeElapsed => CooldownTime - TimeRemaining;
 
     /// <summary>
-    /// Signal emitted when the cooldown finishes.
+    /// Percent of the cooldown completed (as double)
     /// </summary>
-    [Signal] public delegate void CooldownFinishedEventHandler();
+    public double PercentCompleted => TimeElapsed > 0 ? TimeElapsed / CooldownTime : 0;
 
     private bool isPaused = false;
 
