@@ -6,10 +6,8 @@ public partial class UiState : Node
 {
     public static UiState Instance;
 
+    // Test data for the debug screens
     public StatefulData<int> TestCounter = new(0);
-
-    public int Testvalue = 5;
-
 
     public override void _Ready()
     {

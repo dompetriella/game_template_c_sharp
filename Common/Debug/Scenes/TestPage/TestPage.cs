@@ -19,8 +19,6 @@ public partial class TestPage : Control
     [Export]
     public Label CounterLabel;
 
-
-
     public override void _Ready()
     {
         base._Ready();
@@ -28,7 +26,7 @@ public partial class TestPage : Control
 
         ReturnButton.Pressed += () =>
         {
-            ScaffoldManager.Instance.ScaffoldNewSceneTree(NavigationRouteComponent.Scene.Instantiate());
+            ScaffoldManager.Instance.ScaffoldNewSceneTree(NavigationRouteComponent.Scene);
         };
 
 

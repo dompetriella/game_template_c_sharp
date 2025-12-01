@@ -12,6 +12,21 @@ public partial class CooldownComponent : Node
     [Signal] public delegate void CooldownStartedEventHandler();
 
     /// <summary>
+    /// Signal emitted when the cooldown is stopped
+    /// </summary>
+    [Signal] public delegate void CooldownStoppedEventHandler();
+
+    /// <summary>
+    /// Signal emitted when the cooldown is paused.
+    /// </summary>
+    [Signal] public delegate void CooldownPausedEventHandler();
+
+    /// <summary>
+    /// Signal emitted when the cooldown is resumed from a paused state.
+    /// </summary>
+    [Signal] public delegate void CooldownResumedEventHandler();
+
+    /// <summary>
     /// Signal emitted when the cooldown finishes.
     /// </summary>
     [Signal] public delegate void CooldownFinishedEventHandler();
@@ -25,6 +40,11 @@ public partial class CooldownComponent : Node
     /// If true, cooldown will automatically restart after finishing.
     /// </summary>
     [Export] public bool AutoRepeat { get; set; } = false;
+
+    /// <summary>
+    /// If true, cooldown immediately start running when added to the tree
+    /// </summary>
+    [Export] public bool AutoStart { get; set; } = false;
 
     /// <summary>
     /// True if the cooldown is currently running.
@@ -48,6 +68,18 @@ public partial class CooldownComponent : Node
 
     private bool isPaused = false;
 
+    public override void _Ready()
+    {
+        base._Ready();
+
+
+        if (AutoStart)
+        {
+            Start();
+        }
+
+    }
+
     public override void _Process(double delta)
     {
         if (IsRunning && !isPaused)
@@ -69,7 +101,8 @@ public partial class CooldownComponent : Node
     }
 
     /// <summary>
-    /// Starts or restarts the cooldown.  Emits the CooldownStarted signal
+    /// Starts the cooldown at the maximum CooldownTime (ms).
+    /// Emits the CooldownStarted signal
     /// </summary>
     public void Start()
     {
@@ -80,20 +113,38 @@ public partial class CooldownComponent : Node
         EmitSignal(SignalName.CooldownStarted);
     }
 
+    /// <summary>
+    /// Stops the cooldown and sets the TimeRemaining to 0.
+    /// Emits the CooldownStopped signal
+    /// </summary>
     public void Stop()
     {
         IsRunning = false;
         TimeRemaining = 0;
+
+        EmitSignal(SignalName.CooldownStopped);
     }
 
+    /// <summary>
+    /// Pauses the cooldown.  Does not restart the TimeRemaining.  
+    /// Emits the CooldownPaused signal
+    /// </summary>
     public void Pause()
     {
         isPaused = true;
+        EmitSignal(SignalName.CooldownPaused);
     }
 
+
+    /// <summary>
+    /// Resumes the cooldown from a paused state.  Does not restart the TimeRemaining
+    /// and does not work unless paused. 
+    /// Emits the CooldownResumed signal
+    /// </summary>
     public void Resume()
     {
         if (IsRunning)
             isPaused = false;
+            EmitSignal(SignalName.CooldownResumed);
     }
 }

@@ -4,143 +4,167 @@ using System.Threading.Tasks;
 
 public partial class AudioManager : Node
 {
-	public static AudioManager Instance { get; private set; }
+    public static AudioManager Instance { get; private set; }
 
-	[Export]
-	private AudioStreamPlayer MusicNode;
+    [Signal]
+    public delegate void MusicStartedEventHandler(AudioStream audioStream);
 
-	public override void _Ready()
-	{
-		base._Ready();
-		Instance = this;
-	}
+    [Signal]
+    public delegate void MusicStoppedEventHandler(AudioStream audioStream);
 
-	public async void StartMusicTrack(AudioStream audioStream, float fadeInTimeInMs = 0.0f, bool shouldRepeat = true)
-	{
-		if (MusicNode.Playing)
-		{
-			MusicNode.Stop();
-			MusicNode.VolumeDb = 0;
-		}
+    [Signal]
+    public delegate void MusicPausedEventHandler(AudioStream audioStream);
 
-		MusicNode.Stream = PrepareStream(audioStream: audioStream, shouldRepeat: shouldRepeat);
+    [Signal]
+    public delegate void MusicResumedEventHandler(AudioStream audioStream);
 
-		if (fadeInTimeInMs > 0.0f)
-		{
-			float fadeInTime = fadeInTimeInMs / 1000f;
-			MusicNode.VolumeDb = -80;
-			MusicNode.Play();
-			Tween musicTween = GetTree().CreateTween();
-			musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, 0, fadeInTime);
-			await ToSignal(musicTween, Tween.SignalName.Finished);
-		}
+    [Signal]
+    public delegate void SoundEffectPlayedEventHandler(AudioStream audioStream);
 
-		MusicNode.Play();
-	}
+    [Signal]
+    public delegate void SoundEffectEndedEventHandler(AudioStream audioStream);
 
-	public async void StopMusicTrack(float fadeOutTimeInMs = 0.0f)
-	{
-		if (MusicNode.Playing)
-		{
-			if (fadeOutTimeInMs > 0)
-			{
-				float fadeOutTime = fadeOutTimeInMs / 1000f;
-				Tween musicTween = GetTree().CreateTween();
-				musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, -80, fadeOutTime);
-				await ToSignal(musicTween, Tween.SignalName.Finished);
-			}
+    [Export]
+    private AudioStreamPlayer MusicNode;
 
-			MusicNode.Stop();
-		}
-	}
+    public override void _Ready()
+    {
+        base._Ready();
+        Instance = this;
+    }
 
-	public async void ResumeMusic(float fadeInTimeInMs = 0.0f)
-	{
-		if (!MusicNode.Playing)
-		{
-			if (fadeInTimeInMs > 0)
-			{
-				float fadeInTime = fadeInTimeInMs / 1000f;
-				MusicNode.VolumeDb = -80;
-				MusicNode.Play();
-				Tween musicTween = GetTree().CreateTween();
-				musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, 0, fadeInTime);
-				await ToSignal(musicTween, Tween.SignalName.Finished);
-			}
-			MusicNode.Play();
-		}
-	}
+    public async void StartMusicTrack(AudioStream audioStream, float fadeInTimeInMs = 0.0f, bool shouldRepeat = true)
+    {
+        if (MusicNode.Playing)
+        {
+            MusicNode.Stop();
+            MusicNode.VolumeDb = 0;
+        }
 
-	public async void PauseMusic(float fadeOutTimeInMs = 0.0f)
-	{
-		if (!MusicNode.Playing)
-		{
-			GD.PushWarning("Cannot pause music - no music playing");
-			return;
-		}
+        MusicNode.Stream = PrepareStream(audioStream: audioStream, shouldRepeat: shouldRepeat);
 
-		if (fadeOutTimeInMs > 0)
-		{
-			float fadeOutTime = fadeOutTimeInMs / 1000f;
-			Tween musicTween = GetTree().CreateTween();
-			musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, -80, fadeOutTime);
-			await ToSignal(musicTween, Tween.SignalName.Finished);
-		}
+        if (fadeInTimeInMs > 0.0f)
+        {
+            float fadeInTime = fadeInTimeInMs / 1000f;
+            MusicNode.VolumeDb = -80;
+            MusicNode.Play();
+            Tween musicTween = GetTree().CreateTween();
+            musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, 0, fadeInTime);
+            await ToSignal(musicTween, Tween.SignalName.Finished);
+        }
 
-		MusicNode.StreamPaused = true;
-	}
+        MusicNode.Play();
+        EmitSignal(SignalName.MusicStarted);
+    }
 
-	public void PlayMusic(AudioStream audioStream, float fadeInTimeInMs = 0.0f, float previousTrackFadeOutTimeInMs = 0.0f, bool shouldRepeat = true)
-	{
-		StopMusicTrack(fadeOutTimeInMs: previousTrackFadeOutTimeInMs);
-		StartMusicTrack(audioStream: audioStream, fadeInTimeInMs: fadeInTimeInMs);
-	}
+    public async void StopMusicTrack(float fadeOutTimeInMs = 0.0f)
+    {
+        if (MusicNode.Playing)
+        {
+            if (fadeOutTimeInMs > 0)
+            {
+                float fadeOutTime = fadeOutTimeInMs / 1000f;
+                Tween musicTween = GetTree().CreateTween();
+                musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, -80, fadeOutTime);
+                await ToSignal(musicTween, Tween.SignalName.Finished);
+            }
 
-	public async Task PlaySoundEffect(AudioStream soundEffect)
-	{
-		AudioStreamPlayer audioStreamPlayer = new AudioStreamPlayer();
-		AddChild(audioStreamPlayer);
+            MusicNode.Stop();
+            EmitSignal(SignalName.MusicStopped);
+        }
+    }
 
-		audioStreamPlayer.Stream = soundEffect;
-		audioStreamPlayer.Play();
+    public async void ResumeMusic(float fadeInTimeInMs = 0.0f)
+    {
+        if (!MusicNode.Playing)
+        {
+            if (fadeInTimeInMs > 0)
+            {
+                float fadeInTime = fadeInTimeInMs / 1000f;
+                MusicNode.VolumeDb = -80;
+                MusicNode.Play();
+                Tween musicTween = GetTree().CreateTween();
+                musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, 0, fadeInTime);
+                await ToSignal(musicTween, Tween.SignalName.Finished);
+            }
+            MusicNode.Play();
+            EmitSignal(SignalName.MusicResumed);
+        }
+    }
 
-		await ToSignal(audioStreamPlayer, AudioStreamPlayer.SignalName.Finished);
+    public async void PauseMusic(float fadeOutTimeInMs = 0.0f)
+    {
+        if (!MusicNode.Playing)
+        {
+            GD.PushWarning("Cannot pause music - no music playing");
+            return;
+        }
 
-		audioStreamPlayer.QueueFree();
-	}
+        if (fadeOutTimeInMs > 0)
+        {
+            float fadeOutTime = fadeOutTimeInMs / 1000f;
+            Tween musicTween = GetTree().CreateTween();
+            musicTween.TweenProperty(MusicNode, AudioStreamPlayerProperties.VolumeDb, -80, fadeOutTime);
+            await ToSignal(musicTween, Tween.SignalName.Finished);
+        }
 
-	private static AudioStream PrepareStream(AudioStream audioStream, bool shouldRepeat)
-	{
-		if (audioStream == null)
-		{
-			GD.PushWarning("Audio stream cannot be played - is null");
-			return null;
-		}
+        MusicNode.StreamPaused = true;
+        EmitSignal(SignalName.MusicResumed);
+    }
 
-		if (audioStream.Duplicate() is not AudioStream streamCopy)
-		{
-			GD.PushWarning("Audio stream parameter is not an usable AudioStream");
-			return null;
-		}
+    public void PlayMusic(AudioStream audioStream, float fadeInTimeInMs = 0.0f, float previousTrackFadeOutTimeInMs = 0.0f, bool shouldRepeat = true)
+    {
+        StopMusicTrack(fadeOutTimeInMs: previousTrackFadeOutTimeInMs);
+        StartMusicTrack(audioStream: audioStream, fadeInTimeInMs: fadeInTimeInMs);
+    }
 
-		if (shouldRepeat)
-		{
-			switch (streamCopy)
-			{
-				case AudioStreamOggVorbis ogg:
-					ogg.Loop = shouldRepeat;
-					break;
+    public async Task PlaySoundEffect(AudioStream soundEffect)
+    {
+        AudioStreamPlayer audioStreamPlayer = new AudioStreamPlayer();
+        AddChild(audioStreamPlayer);
 
-				case AudioStreamMP3 mp3:
-					mp3.Loop = shouldRepeat;
-					break;
+        audioStreamPlayer.Stream = soundEffect;
+        audioStreamPlayer.Play();
+        EmitSignal(SignalName.SoundEffectPlayed);
 
-				case AudioStreamWav wav:
-					wav.LoopMode = shouldRepeat ? AudioStreamWav.LoopModeEnum.Forward : AudioStreamWav.LoopModeEnum.Disabled;
-					break;
-			}
-		}
+        await ToSignal(audioStreamPlayer, AudioStreamPlayer.SignalName.Finished);
 
-		return streamCopy;
-	}
+        audioStreamPlayer.QueueFree();
+        EmitSignal(SignalName.SoundEffectEnded);
+    }
+
+    private static AudioStream PrepareStream(AudioStream audioStream, bool shouldRepeat)
+    {
+        if (audioStream == null)
+        {
+            GD.PushWarning("Audio stream cannot be played - is null");
+            return null;
+        }
+
+        if (audioStream.Duplicate() is not AudioStream streamCopy)
+        {
+            GD.PushWarning("Audio stream parameter is not an usable AudioStream");
+            return null;
+        }
+
+        if (shouldRepeat)
+        {
+            switch (streamCopy)
+            {
+                case AudioStreamOggVorbis ogg:
+                    ogg.Loop = shouldRepeat;
+                    break;
+
+                case AudioStreamMP3 mp3:
+                    mp3.Loop = shouldRepeat;
+                    break;
+
+                case AudioStreamWav wav:
+                    wav.LoopMode = shouldRepeat ? AudioStreamWav.LoopModeEnum.Forward : AudioStreamWav.LoopModeEnum.Disabled;
+                    break;
+            }
+        }
+
+        return streamCopy;
+    }
 }
