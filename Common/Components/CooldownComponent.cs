@@ -101,8 +101,8 @@ public partial class CooldownComponent : Node
     }
 
     /// <summary>
-    /// Starts the cooldown at the maximum CooldownTime (ms).
-    /// Emits the CooldownStarted signal
+    /// <para>Starts the cooldown at the maximum CooldownTime (ms).</para>
+    /// <para>Emits the <see cref="CooldownStartedEventHandler"/> signal.</para>
     /// </summary>
     public void Start()
     {
@@ -114,8 +114,8 @@ public partial class CooldownComponent : Node
     }
 
     /// <summary>
-    /// Stops the cooldown and sets the TimeRemaining to 0.
-    /// Emits the CooldownStopped signal
+    /// <para>Stops the cooldown and sets the TimeRemaining to 0.</para>
+    /// <para>Emits the <see cref="CooldownStoppedEventHandler"/> signal.</para>
     /// </summary>
     public void Stop()
     {
@@ -125,9 +125,9 @@ public partial class CooldownComponent : Node
         EmitSignal(SignalName.CooldownStopped);
     }
 
-    /// <summary>
-    /// Pauses the cooldown.  Does not restart the TimeRemaining.  
-    /// Emits the CooldownPaused signal
+   /// <summary>
+    /// <para>Pauses the cooldown. Does not restart the TimeRemaining.</para>
+    /// <para>Emits the <see cref="CooldownPausedEventHandler"/> signal.</para>
     /// </summary>
     public void Pause()
     {
@@ -137,9 +137,8 @@ public partial class CooldownComponent : Node
 
 
     /// <summary>
-    /// Resumes the cooldown from a paused state.  Does not restart the TimeRemaining
-    /// and does not work unless paused. 
-    /// Emits the CooldownResumed signal
+    /// <para>Resumes the cooldown from a paused state. Does not restart the TimeRemaining and only works if paused.</para>
+    /// <para>Emits the <see cref="CooldownResumedEventHandler"/> signal.</para>
     /// </summary>
     public void Resume()
     {

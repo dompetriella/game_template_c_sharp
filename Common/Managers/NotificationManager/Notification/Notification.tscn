@@ -15,7 +15,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="SimpleNotification" type="MarginContainer" node_paths=PackedStringArray("MessageLabel")]
+[node name="SimpleNotification" type="MarginContainer" node_paths=PackedStringArray("MessageLabel", "TextureRectImage", "MessageSpacing")]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -25,7 +25,9 @@ offset_bottom = -19.0
 grow_vertical = 0
 theme = ExtResource("1_to4u0")
 script = ExtResource("2_praw3")
-MessageLabel = NodePath("PanelContainer/MarginContainer/RichTextLabel")
+MessageLabel = NodePath("PanelContainer/MarginContainer/HBoxContainer/RichTextLabel")
+TextureRectImage = NodePath("PanelContainer/MarginContainer/HBoxContainer/TextureRect")
+MessageSpacing = NodePath("PanelContainer/MarginContainer/HBoxContainer/Spacing")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -38,8 +40,21 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 6
+
+[node name="Spacing" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
+vertical_alignment = 1

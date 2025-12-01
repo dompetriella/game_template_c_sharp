@@ -54,7 +54,8 @@ public partial class TestTitlePage : Control
 
         NotificationButton.Pressed += async () =>
         {
-            await NotificationManager.Instance.ShowNotification(messageText: "This is [b]bold[/b] and [color=red]red[/color] text.");
+            Texture2D testImage = ResourceLoader.Load<Texture2D>("uid://cqv2thbgs86be");
+            await NotificationManager.Instance.ShowNotification(image: testImage, messageText: "This is [b]bold[/b] and [color=red]red[/color] text.");
         };
     }
 }
