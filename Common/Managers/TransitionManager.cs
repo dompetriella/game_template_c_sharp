@@ -65,7 +65,9 @@ public partial class TransitionManager : CanvasLayer
     private void OnAnimationStartedInternal(StringName animationName)
     {
         if (_pendingDisableInput)
-            Layer = 99;
+        {
+            ColorRectNode.MouseFilter = Control.MouseFilterEnum.Stop;
+        }
 
         EmitSignal(SignalName.TransitionStarted, (string)animationName);
     }
@@ -73,7 +75,7 @@ public partial class TransitionManager : CanvasLayer
     private void OnAnimationFinishedInternal(StringName animationName)
     {
         if (_pendingEnableInput)
-            Layer = 0;
+            ColorRectNode.MouseFilter = Control.MouseFilterEnum.Pass;
 
         EmitSignal(SignalName.TransitionEnded, (string)animationName);
     }

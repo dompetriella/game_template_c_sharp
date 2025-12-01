@@ -2,11 +2,23 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// A lightweight, reactive data container that holds a single value of type <typeparamref name="T"/>
+/// and notifies subscribed listeners whenever the value changes.
+///
+/// This class allows you to define shared or persistent state (such as player health, score, UI counters, etc.)
+/// in a way that automatically reacts to changes.
+///
+/// Example:
+/// public static StatefulData<int> PlayerHealth = new StatefulData<int>(100);
+/// PlayerHealth.ValueChanged(this, (previousValue, newValue) => HealthLabel.Text = newValue.ToString());
+/// PlayerHealth.SetValue(PlayerHealth.Value - 10);
+/// </summary>
 public class StatefulData<T> where T : IEquatable<T>
 {
 	public delegate void ValueChangedHandler(T previousValue, T newValue);
 
-	private readonly List<(WeakReference<Node> NodeRef, ValueChangedHandler Handler)> _listeners = new();
+	private readonly List<(WeakReference<Node> NodeRef, ValueChangedHandler Handler)> _listeners = [];
 
 	private T _value;
 	private T _previousValue;

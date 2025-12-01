@@ -46,9 +46,10 @@ public partial class TestTitlePage : Control
             AudioManager.Instance.PauseMusic();
         };
 
-        NextPageButton.Pressed += () =>
+        NextPageButton.Pressed += async () =>
         {
             ScaffoldManager.Instance.ScaffoldNewSceneTree(newSceneTree: NavigationRouteComponent.Scene.Instantiate());
+            await NotificationManager.Instance.ShowNotification(messageText: "You changed pages!", showDurationInMs: 2000);
         };
 
         NotificationButton.Pressed += async () =>
