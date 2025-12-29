@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b31x8bvetl2ni"]
+
+[ext_resource type="Shader" uid="uid://cgbhdkbicrnux" path="res://Common/Effects/Shaders/TintShader/TintShader.gdshader" id="1_xe8e1"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_xe8e1")
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/tint_strength = 0.0

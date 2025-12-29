@@ -118,6 +118,14 @@ public partial class AudioManager : Node
         StartMusicTrack(audioStream: audioStream, fadeInTimeInMs: fadeInTimeInMs);
     }
 
+
+    public async Task PlaySoundEffect(string soundEffectPath)
+    {
+
+        var soundEffect = ResourceLoader.Load<AudioStream>(soundEffectPath);
+        await PlaySoundEffect(soundEffect: soundEffect);
+    }
+
     public async Task PlaySoundEffect(AudioStream soundEffect)
     {
         AudioStreamPlayer audioStreamPlayer = new AudioStreamPlayer();
