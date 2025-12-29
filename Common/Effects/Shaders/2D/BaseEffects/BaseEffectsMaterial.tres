@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bje6l7ousppn8"]
+
+[ext_resource type="Shader" uid="uid://dbbabqjqiakah" path="res://Common/Effects/Shaders/2D/BaseEffects/BaseEffects.gdshader" id="1_yijpe"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_yijpe")
+shader_parameter/enable_tint = true
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+shader_parameter/tint_strength = 0.0
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_thickness = 1.0
