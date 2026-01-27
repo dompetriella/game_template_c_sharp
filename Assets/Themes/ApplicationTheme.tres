@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://befu1x5a2206v"]
+[gd_resource type="Theme" format=3 uid="uid://befu1x5a2206v"]
 
 [ext_resource type="FontFile" uid="uid://sk0r5ytg65ro" path="res://Assets/Fonts/Ithaca-LVB75.ttf" id="1_gmwrx"]
 [ext_resource type="StyleBox" uid="uid://dan8ha1s01xam" path="res://Assets/Themes/Buttons/BaseButtonTheme.tres" id="3_v3str"]

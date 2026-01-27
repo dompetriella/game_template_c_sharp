@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://brmkjkj45tbhm"]
+[gd_scene format=3 uid="uid://brmkjkj45tbhm"]
 
 [ext_resource type="Script" uid="uid://dopmkyg752t38" path="res://Game.cs" id="1_t88pq"]
 [ext_resource type="Script" uid="uid://d1316acctk7q3" path="res://Common/Managers/EventManager/UiEvents.cs" id="2_joorw"]
@@ -61,26 +61,26 @@ _data = {
 &"fade_out": SubResource("Animation_eow3j")
 }
 
-[node name="Game" type="Node"]
+[node name="Game" type="Node" unique_id=961298756]
 script = ExtResource("1_t88pq")
 
-[node name="EventManager" type="Node" parent="."]
+[node name="EventManager" type="Node" parent="." unique_id=32921386]
 
-[node name="UiEvents" type="Node" parent="EventManager"]
+[node name="UiEvents" type="Node" parent="EventManager" unique_id=406564398]
 script = ExtResource("2_joorw")
 
-[node name="StateManager" type="Node" parent="."]
+[node name="StateManager" type="Node" parent="." unique_id=60825891]
 
-[node name="UiState" type="Node" parent="StateManager"]
+[node name="UiState" type="Node" parent="StateManager" unique_id=1898590234]
 script = ExtResource("8_joorw")
 
-[node name="TransitionManager" type="CanvasLayer" parent="." node_paths=PackedStringArray("ColorRectNode", "AnimationPlayerNode")]
+[node name="TransitionManager" type="CanvasLayer" parent="." unique_id=260364993 node_paths=PackedStringArray("ColorRectNode", "AnimationPlayerNode")]
 layer = 0
 script = ExtResource("2_r0x5m")
 ColorRectNode = NodePath("TransitionLayer/ColorRect")
 AnimationPlayerNode = NodePath("TransitionLayer/TransitionPlayer")
 
-[node name="TransitionLayer" type="Control" parent="TransitionManager"]
+[node name="TransitionLayer" type="Control" parent="TransitionManager" unique_id=957994140]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,7 +88,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="TransitionManager/TransitionLayer"]
+[node name="ColorRect" type="ColorRect" parent="TransitionManager/TransitionLayer" unique_id=499908301]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -97,17 +97,15 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
 
-[node name="TransitionPlayer" type="AnimationPlayer" parent="TransitionManager/TransitionLayer"]
-libraries = {
-&"": SubResource("AnimationLibrary_j5wjh")
-}
+[node name="TransitionPlayer" type="AnimationPlayer" parent="TransitionManager/TransitionLayer" unique_id=177962940]
+libraries/ = SubResource("AnimationLibrary_j5wjh")
 
-[node name="NotificationManager" type="CanvasLayer" parent="." node_paths=PackedStringArray("NotificationColumn")]
+[node name="NotificationManager" type="CanvasLayer" parent="." unique_id=1534184917 node_paths=PackedStringArray("NotificationColumn")]
 layer = 0
 script = ExtResource("5_yx171")
 NotificationColumn = NodePath("Control/MarginContainer/NotificationColumn")
 
-[node name="Control" type="Control" parent="NotificationManager"]
+[node name="Control" type="Control" parent="NotificationManager" unique_id=132640923]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -115,7 +113,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="NotificationManager/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="NotificationManager/Control" unique_id=1254103929]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -128,17 +126,17 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="NotificationColumn" type="VBoxContainer" parent="NotificationManager/Control/MarginContainer"]
+[node name="NotificationColumn" type="VBoxContainer" parent="NotificationManager/Control/MarginContainer" unique_id=1802185533]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="AudioManager" type="Node" parent="." node_paths=PackedStringArray("MusicNode")]
+[node name="AudioManager" type="Node" parent="." unique_id=809551888 node_paths=PackedStringArray("MusicNode")]
 script = ExtResource("3_3mrqo")
 MusicNode = NodePath("Music")
 
-[node name="Music" type="AudioStreamPlayer" parent="AudioManager"]
+[node name="Music" type="AudioStreamPlayer" parent="AudioManager" unique_id=1596718380]
 
-[node name="ScaffoldManager" type="Node" parent="."]
+[node name="ScaffoldManager" type="Node" parent="." unique_id=693913184]
 script = ExtResource("4_joorw")
 
-[node name="TestTitlePage" parent="ScaffoldManager" instance=ExtResource("5_2vekm")]
+[node name="TestTitlePage" parent="ScaffoldManager" unique_id=1973034825 instance=ExtResource("5_2vekm")]
