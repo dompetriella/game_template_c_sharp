@@ -1,16 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2xkv82rqjhfh"]
+[gd_scene format=3 uid="uid://d2xkv82rqjhfh"]
 
 [ext_resource type="Script" uid="uid://dnjq67vba1f3g" path="res://Common/Debug/Scenes/TestShaderPage/TestShaderPage.cs" id="1_fdqxg"]
 [ext_resource type="Texture2D" uid="uid://dg1rs7kni3mxd" path="res://Assets/Themes/Backgrounds/DefaultBackground.tres" id="2_0plr8"]
-[ext_resource type="Texture2D" uid="uid://uokwybko4aq6" path="res://Assets/Images/ether_spiider.png" id="4_fdqxg"]
 [ext_resource type="Material" uid="uid://bje6l7ousppn8" path="res://Common/Effects/Shaders/2D/BaseEffects/BaseEffectsMaterial.tres" id="5_0plr8"]
 
-[node name="TestShaderPage" type="Node" node_paths=PackedStringArray("BlinkTexture", "OutlineTexture")]
+[node name="TestShaderPage" type="Node" unique_id=232626812]
 script = ExtResource("1_fdqxg")
-BlinkTexture = NodePath("")
-OutlineTexture = NodePath("")
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=80359746]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +15,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="Control"]
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=209271990]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,11 +24,5 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_0plr8")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Node2D" type="Node2D" parent="." unique_id=1038875925]
 material = ExtResource("5_0plr8")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
-material = ExtResource("5_0plr8")
-position = Vector2(577, 270)
-scale = Vector2(10, 10)
-texture = ExtResource("4_fdqxg")

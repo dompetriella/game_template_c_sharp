@@ -8,7 +8,7 @@ public partial class TestTitlePage : Control
     public Button PlayMusicButton;
 
     [Export]
-    public Button PauseMusicButton;
+    public Button StopMusicButton;
 
     [Export]
     public Button PlaySoundEffectButton;
@@ -41,7 +41,7 @@ public partial class TestTitlePage : Control
             AudioManager.Instance.StartMusicTrack(audioStream: music);
         };
 
-        PauseMusicButton.Pressed += () =>
+        StopMusicButton.Pressed += () =>
         {
             AudioManager.Instance.PauseMusic();
         };
