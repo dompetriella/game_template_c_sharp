@@ -10,4 +10,4 @@ shader_parameter/tint_color = Color(1, 1, 1, 1)
 shader_parameter/tint_strength = 0.0
 shader_parameter/enable_outline = true
 shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/outline_thickness = 1.0
+shader_parameter/outline_thickness = 16.0
